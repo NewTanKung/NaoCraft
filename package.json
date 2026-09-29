@@ -1,0 +1,15 @@
+{
+  "name": "naocraft",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NaoCraft - Minecraft Server Management WebApp",
+  "scripts": {
+    "dev": "concurrently \"bun run dev:backend\" \"bun run dev:frontend\"",
+    "dev:backend": "cd backend && bun run dev",
+    "dev:frontend": "cd frontend && bun run dev",
+    "install:all": "cd backend && bun install && cd ../frontend && bun install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
