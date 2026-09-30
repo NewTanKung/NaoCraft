@@ -1,6 +1,35 @@
 'use client';
 
 import { useState, useEffect, useRef, useMemo } from 'react';
+import {
+  Folder,
+  FolderOpen,
+  FolderPlus,
+  File,
+  FileText,
+  FileCode,
+  Coffee,
+  Image as ImageIcon,
+  Upload,
+  Download,
+  Package,
+  RefreshCw,
+  ArrowUp,
+  Plus,
+  FilePlus,
+  Key,
+  Copy,
+  Check,
+  Trash2,
+  Edit3,
+  Tag,
+  X,
+  ShieldCheck,
+  Home,
+  Search,
+  Save,
+  AlertTriangle,
+} from 'lucide-react';
 import { api } from '@/lib/api';
 
 interface FileItem {
@@ -143,7 +172,6 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
       setShowNewFileModal(false);
       setNewFileName('');
       await fetchFiles();
-      // Auto open editor
       openEditor({ name: newFileName.trim(), isDirectory: false, size: 0, updatedAt: new Date().toISOString() });
     } catch (err) {
       console.error(err);
@@ -215,20 +243,27 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
   };
 
-  const getFileIcon = (file: FileItem) => {
-    if (file.isDirectory) return '📁';
+  const renderFileIcon = (file: FileItem) => {
+    if (file.isDirectory) return <Folder className="w-5 h-5 text-amber-400 fill-amber-400/20" />;
     const ext = file.name.split('.').pop()?.toLowerCase();
     switch (ext) {
-      case 'json': return '📜';
+      case 'json':
       case 'yml':
-      case 'yaml': return '⚙️';
-      case 'properties': return '🔧';
-      case 'jar': return '☕';
-      case 'txt': return '📄';
-      case 'log': return '📝';
+      case 'yaml':
+      case 'properties':
+      case 'toml':
+        return <FileCode className="w-5 h-5 text-cyan-400" />;
+      case 'jar':
+        return <Coffee className="w-5 h-5 text-amber-500" />;
+      case 'txt':
+      case 'log':
+        return <FileText className="w-5 h-5 text-slate-300" />;
       case 'png':
-      case 'jpg': return '🖼️';
-      default: return '📄';
+      case 'jpg':
+      case 'jpeg':
+        return <ImageIcon className="w-5 h-5 text-purple-400" />;
+      default:
+        return <File className="w-5 h-5 text-slate-400" />;
     }
   };
 
@@ -252,7 +287,6 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
     setSelectedFiles(next);
   };
 
-  // Line count for editor
   const lineCount = useMemo(() => {
     return editorContent.split('\n').length;
   }, [editorContent]);
@@ -279,7 +313,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
         <div className="space-y-2.5">
           <div className="flex items-center gap-3">
             <h3 className="text-2xl font-black text-white tracking-tight flex items-center gap-2.5">
-              <span className="text-2xl">📁</span>
+              <Folder className="w-6 h-6 text-emerald-400" />
               <span>File Manager</span>
             </h3>
             <span className="text-xs px-3 py-1 rounded-full bg-slate-800/90 text-slate-300 border border-slate-700 font-mono font-semibold">
@@ -298,10 +332,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
                   : 'bg-slate-900/90 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'
               }`}
             >
-              <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" strokeWidth="2" />
-                <polyline points="9 22 9 12 15 12 15 22" />
-              </svg>
+              <Home className="w-4 h-4 text-slate-400" />
               <span>Home</span>
             </button>
 
@@ -320,7 +351,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
                         : 'bg-slate-900/90 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'
                     }`}
                   >
-                    <span>📁</span>
+                    <Folder className="w-3.5 h-3.5 text-amber-400" />
                     <span>{part}</span>
                   </button>
                 </div>
@@ -335,10 +366,20 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
                   setTimeout(() => setCopiedPath(false), 2000);
                 }}
                 type="button"
-                className="px-2.5 py-1 rounded-lg text-xs text-slate-400 hover:text-emerald-300 hover:bg-slate-800 border border-slate-800 cursor-pointer transition-colors"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs text-slate-400 hover:text-emerald-300 hover:bg-slate-800 border border-slate-800 cursor-pointer transition-colors"
                 title="คัดลอก Path ปัจจุบัน"
               >
-                {copiedPath ? '✓ Copied' : '📋 Copy Path'}
+                {copiedPath ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Copied</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>Copy Path</span>
+                  </>
+                )}
               </button>
             )}
           </div>
@@ -351,9 +392,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
             type="button"
             className="flex items-center gap-2 border border-indigo-500/40 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 hover:text-white font-bold px-4 py-2.5 rounded-xl text-sm transition-all shadow-sm cursor-pointer"
           >
-            <svg className="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14.5V11a1 1 0 0 0-2 0v5.5a1 1 0 0 0 2 0zm-1-8a1.25 1.25 0 1 1 1.25-1.25A1.25 1.25 0 0 1 12 8.5z" strokeWidth="2" />
-            </svg>
+            <Key className="w-4 h-4 text-indigo-400" />
             <span>SFTP Connect</span>
           </button>
 
@@ -363,7 +402,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
             className="flex items-center gap-2 border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white font-semibold px-4 py-2.5 rounded-xl text-sm transition-all shadow-sm cursor-pointer"
             title="ดาวน์โหลดไฟล์ทั้งหมดเป็น ZIP"
           >
-            <span>📦</span>
+            <Package className="w-4 h-4 text-slate-400" />
             <span>Export ZIP</span>
           </a>
 
@@ -373,9 +412,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
             className="w-10 h-10 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 flex items-center justify-center transition-all shadow-sm cursor-pointer"
             title="รีเฟรชรายการไฟล์"
           >
-            <svg className={`w-5 h-5 ${loading ? 'animate-spin text-emerald-400' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-emerald-400' : 'text-slate-400'}`} />
           </button>
         </div>
       </div>
@@ -384,10 +421,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-2xl bg-[#0e1320] border border-slate-800 shadow-lg">
         {/* Search */}
         <div className="relative flex-1 max-w-md">
-          <svg className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <circle cx="11" cy="11" r="8" strokeWidth="2" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" strokeWidth="2" />
-          </svg>
+          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -395,14 +429,18 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
             placeholder="ค้นหาไฟล์หรือโฟลเดอร์... (กด / เพื่อค้นหา)"
             className="w-full bg-[#070b14] border border-slate-700/80 text-slate-200 text-sm rounded-xl pl-10 pr-10 py-2.5 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/50 transition-all placeholder:text-slate-500"
           />
-          {searchQuery && (
+          {searchQuery ? (
             <button
               onClick={() => setSearchQuery('')}
               type="button"
               className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-sm cursor-pointer"
             >
-              ✕
+              <X className="w-4 h-4" />
             </button>
+          ) : (
+            <kbd className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500 bg-slate-800 px-2 py-0.5 rounded border border-slate-700 font-mono pointer-events-none select-none">
+              /
+            </kbd>
           )}
         </div>
 
@@ -415,9 +453,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
             className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-sm font-semibold transition-all shadow-sm cursor-pointer"
             title="ขึ้น 1 ระดับ"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path d="M12 19V5M5 12l7-7 7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <ArrowUp className="w-4 h-4" />
             <span>ขึ้น 1 ระดับ</span>
           </button>
 
@@ -427,9 +463,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
             type="button"
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm bg-slate-800/90 hover:bg-slate-700 text-white border border-slate-700 shadow-md transition-all cursor-pointer"
           >
-            <svg className="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <Upload className="w-4 h-4 text-emerald-400" />
             <span>Upload</span>
           </button>
 
@@ -440,11 +474,8 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
               type="button"
               className="flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white text-sm font-bold px-4 py-2.5 rounded-xl transition-all shadow-[0_4px_16px_rgba(16,185,129,0.3)] cursor-pointer"
             >
-              <span className="text-base leading-none font-extrabold">+</span>
+              <Plus className="w-4 h-4" />
               <span>Create</span>
-              <svg className="w-3.5 h-3.5 text-emerald-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path d="M6 9l6 6 6-6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
             </button>
 
             {showCreateDropdown && (
@@ -457,7 +488,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
                   type="button"
                   className="w-full text-left px-4 py-2.5 text-xs font-medium text-slate-200 hover:text-white hover:bg-slate-800 flex items-center gap-2.5 cursor-pointer"
                 >
-                  <span className="text-emerald-400">📄</span>
+                  <FilePlus className="w-4 h-4 text-emerald-400" />
                   <span>New File</span>
                 </button>
                 <button
@@ -468,7 +499,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
                   type="button"
                   className="w-full text-left px-4 py-2.5 text-xs font-medium text-slate-200 hover:text-white hover:bg-slate-800 flex items-center gap-2.5 cursor-pointer"
                 >
-                  <span className="text-amber-400">📁</span>
+                  <FolderPlus className="w-4 h-4 text-amber-400" />
                   <span>New Directory</span>
                 </button>
               </div>
@@ -493,6 +524,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
               type="button"
               className="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-300 hover:text-white border border-red-500/30 rounded-lg font-semibold transition-all flex items-center gap-1.5 cursor-pointer shadow-sm text-xs"
             >
+              <Trash2 className="w-4 h-4" />
               <span>ลบที่เลือก (Delete {selectedFiles.size})</span>
             </button>
             <button
@@ -515,7 +547,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
           </div>
         ) : filteredFiles.length === 0 ? (
           <div className="py-24 text-center text-slate-500 font-mono text-sm">
-            <div className="text-4xl mb-2">📂</div>
+            <FolderOpen className="w-12 h-12 text-slate-600 mx-auto mb-3" />
             <p>โฟลเดอร์นี้ว่างเปล่า หรือไม่พบไฟล์ที่ตรงกับคำค้นหา</p>
           </div>
         ) : (
@@ -557,7 +589,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
                       </td>
                       <td className="py-3 px-4">
                         <div className="flex items-center gap-2.5">
-                          <span className="text-lg flex-shrink-0">{getFileIcon(file)}</span>
+                          <span className="flex-shrink-0">{renderFileIcon(file)}</span>
                           {file.isDirectory ? (
                             <button
                               onClick={() => navigateTo(currentPath ? `${currentPath}/${file.name}` : file.name)}
@@ -591,7 +623,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
                         })}
                       </td>
                       <td className="py-3 px-4 text-right">
-                        <div className="flex items-center justify-end gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity">
+                        <div className="flex items-center justify-end gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
                           {!file.isDirectory && isEditable(file.name) && (
                             <button
                               onClick={() => openEditor(file)}
@@ -599,7 +631,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
                               className="p-1.5 hover:bg-slate-700/80 text-cyan-400 rounded-lg transition-colors cursor-pointer"
                               title="เปิดแก้ไขไฟล์"
                             >
-                              ✏️
+                              <Edit3 className="w-4 h-4" />
                             </button>
                           )}
                           {!file.isDirectory && (
@@ -609,7 +641,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
                               className="p-1.5 hover:bg-slate-700/80 text-emerald-400 rounded-lg transition-colors cursor-pointer"
                               title="ดาวน์โหลดไฟล์"
                             >
-                              ⬇️
+                              <Download className="w-4 h-4" />
                             </a>
                           )}
                           <button
@@ -621,7 +653,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
                             className="p-1.5 hover:bg-slate-700/80 text-amber-300 rounded-lg transition-colors cursor-pointer"
                             title="เปลี่ยนชื่อ"
                           >
-                            🏷️
+                            <Tag className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => setDeleteTarget(file)}
@@ -629,7 +661,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
                             className="p-1.5 hover:bg-red-500/20 text-rose-400 rounded-lg transition-colors cursor-pointer"
                             title="ลบ"
                           >
-                            🗑️
+                            <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
                       </td>
@@ -649,7 +681,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
             {/* Editor Top Bar */}
             <div className="p-4 border-b border-slate-800 bg-slate-900/90 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="text-xl">📝</span>
+                <FileCode className="w-5 h-5 text-cyan-400" />
                 <div>
                   <h4 className="font-bold text-white text-sm font-mono">{editingFile.name}</h4>
                   <p className="text-[11px] text-slate-400 font-mono">/{editingFile.path}</p>
@@ -658,8 +690,9 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
 
               <div className="flex items-center gap-3">
                 {editorSavedNotice && (
-                  <span className="text-xs text-emerald-400 font-mono bg-emerald-500/10 px-2.5 py-1 rounded border border-emerald-500/30">
-                    ✓ บันทึกสำเร็จ
+                  <span className="inline-flex items-center gap-1.5 text-xs text-emerald-400 font-mono bg-emerald-500/10 px-2.5 py-1 rounded border border-emerald-500/30">
+                    <Check className="w-3.5 h-3.5" />
+                    <span>บันทึกสำเร็จ</span>
                   </span>
                 )}
                 <button
@@ -668,14 +701,15 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
                   type="button"
                   className="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-xl font-bold text-xs bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white shadow-sm transition-all cursor-pointer disabled:opacity-50"
                 >
-                  {editorSaving ? 'กำลังบันทึก...' : '💾 บันทึก (Save)'}
+                  <Save className="w-3.5 h-3.5" />
+                  <span>{editorSaving ? 'กำลังบันทึก...' : 'บันทึก (Save)'}</span>
                 </button>
                 <button
                   onClick={() => setEditingFile(null)}
                   type="button"
                   className="p-2 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition-colors cursor-pointer"
                 >
-                  ✕
+                  <X className="w-5 h-5" />
                 </button>
               </div>
             </div>
@@ -713,7 +747,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
           <div className="bg-[#0b101e] border border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-5 shadow-2xl animate-[scale-in_0.15s_ease-out]">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <h4 className="text-base font-bold text-white flex items-center gap-2">
-                <span>🔐</span>
+                <ShieldCheck className="w-5 h-5 text-indigo-400" />
                 <span>SFTP Connection Details</span>
               </h4>
               <button
@@ -721,7 +755,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
                 type="button"
                 className="text-slate-400 hover:text-white cursor-pointer"
               >
-                ✕
+                <X className="w-5 h-5" />
               </button>
             </div>
 
@@ -803,7 +837,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
           <form onSubmit={handleCreateFile} className="bg-[#0b101e] border border-slate-800 rounded-2xl w-full max-w-sm p-6 space-y-4 shadow-2xl">
             <h4 className="text-base font-bold text-white flex items-center gap-2">
-              <span>📄</span>
+              <FilePlus className="w-5 h-5 text-emerald-400" />
               <span>สร้างไฟล์ใหม่</span>
             </h4>
             <div>
@@ -841,7 +875,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
           <form onSubmit={handleCreateFolder} className="bg-[#0b101e] border border-slate-800 rounded-2xl w-full max-w-sm p-6 space-y-4 shadow-2xl">
             <h4 className="text-base font-bold text-white flex items-center gap-2">
-              <span>📁</span>
+              <FolderPlus className="w-5 h-5 text-amber-400" />
               <span>สร้างโฟลเดอร์ใหม่</span>
             </h4>
             <div>
@@ -879,7 +913,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
           <form onSubmit={handleRename} className="bg-[#0b101e] border border-slate-800 rounded-2xl w-full max-w-sm p-6 space-y-4 shadow-2xl">
             <h4 className="text-base font-bold text-white flex items-center gap-2">
-              <span>🏷️</span>
+              <Tag className="w-5 h-5 text-amber-400" />
               <span>เปลี่ยนชื่อ {renameTarget.name}</span>
             </h4>
             <div>
@@ -916,7 +950,7 @@ export default function FileManagerTab({ serverId, server }: FileManagerTabProps
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
           <div className="bg-[#0b101e] border border-red-500/30 rounded-2xl w-full max-w-sm p-6 space-y-4 shadow-2xl">
             <h4 className="text-base font-bold text-red-400 flex items-center gap-2">
-              <span>🗑️</span>
+              <AlertTriangle className="w-5 h-5 text-red-400" />
               <span>ยืนยันการลบ</span>
             </h4>
             <p className="text-xs text-slate-300">

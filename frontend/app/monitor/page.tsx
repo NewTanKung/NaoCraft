@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/api';
+import { Activity, Cpu, HardDrive, Clock, ArrowRight } from 'lucide-react';
 
 export default function MonitorPage() {
   const [systemStats, setSystemStats] = useState<any>({});
@@ -69,7 +70,10 @@ export default function MonitorPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h3 className="text-xl font-extrabold text-white tracking-tight">การตรวจสอบทรัพยากรระบบ (System Monitor)</h3>
+          <h3 className="text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
+            <Activity className="w-6 h-6 text-emerald-400" />
+            <span>การตรวจสอบทรัพยากรระบบ (System Monitor)</span>
+          </h3>
           <p className="text-xs text-slate-400 mt-0.5">ติดตามการใช้ CPU, Memory และโหลดของเซิร์ฟเวอร์แบบ Real-time</p>
         </div>
 
@@ -90,7 +94,10 @@ export default function MonitorPage() {
         <div className="rounded-2xl bg-gradient-to-br from-slate-900/90 to-[#0b101e]/90 border border-slate-800 shadow-xl backdrop-blur-xl p-6 relative overflow-hidden group hover:border-slate-700 transition-all">
           <div className="absolute -right-6 -top-6 w-24 h-24 bg-cyan-500/10 rounded-full blur-2xl" />
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">CPU Usage</span>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+              <Cpu className="w-4 h-4 text-cyan-400" />
+              <span>CPU Usage</span>
+            </span>
             <span className="text-xs font-mono font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">
               {systemStats.cpuUsage?.toFixed(1) || '0'}%
             </span>
@@ -112,7 +119,10 @@ export default function MonitorPage() {
         <div className="rounded-2xl bg-gradient-to-br from-slate-900/90 to-[#0b101e]/90 border border-slate-800 shadow-xl backdrop-blur-xl p-6 relative overflow-hidden group hover:border-slate-700 transition-all">
           <div className="absolute -right-6 -top-6 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl" />
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">RAM ที่กำลังใช้</span>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+              <HardDrive className="w-4 h-4 text-emerald-400" />
+              <span>RAM ที่กำลังใช้</span>
+            </span>
             <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
               {memPercent.toFixed(1)}%
             </span>
@@ -135,7 +145,10 @@ export default function MonitorPage() {
         <div className="rounded-2xl bg-gradient-to-br from-slate-900/90 to-[#0b101e]/90 border border-slate-800 shadow-xl backdrop-blur-xl p-6 relative overflow-hidden group hover:border-slate-700 transition-all">
           <div className="absolute -right-6 -top-6 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl" />
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">RAM ว่าง</span>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+              <HardDrive className="w-4 h-4 text-blue-400" />
+              <span>RAM ว่าง</span>
+            </span>
             <span className="text-xs font-mono font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">
               Available
             </span>
@@ -156,7 +169,10 @@ export default function MonitorPage() {
         <div className="rounded-2xl bg-gradient-to-br from-slate-900/90 to-[#0b101e]/90 border border-slate-800 shadow-xl backdrop-blur-xl p-6 relative overflow-hidden group hover:border-slate-700 transition-all">
           <div className="absolute -right-6 -top-6 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl" />
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Uptime</span>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+              <Clock className="w-4 h-4 text-purple-400" />
+              <span>Uptime</span>
+            </span>
             <span className="text-xs font-mono font-bold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/20">
               Online
             </span>
@@ -249,9 +265,10 @@ export default function MonitorPage() {
 
                   <Link
                     href={`/servers/${srv.id}`}
-                    className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg font-semibold text-xs bg-slate-800/80 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700/80 hover:border-slate-600 transition-all cursor-pointer"
+                    className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg font-semibold text-xs bg-slate-800/80 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700/80 hover:border-slate-600 transition-all cursor-pointer group/link"
                   >
-                    จัดการ →
+                    <span>จัดการ</span>
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/link:translate-x-0.5" />
                   </Link>
                 </div>
               </div>

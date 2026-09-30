@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
+import { Save, Check, RefreshCw } from 'lucide-react';
 import { api } from '@/lib/api';
 
 interface ConfigTabProps {
@@ -88,11 +89,7 @@ export default function ConfigTab({ serverId }: ConfigTabProps) {
             type="button"
             className="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-xl font-bold text-xs bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white shadow-sm transition-all cursor-pointer disabled:opacity-50"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-              <polyline points="17 21 17 13 7 13 7 21" />
-              <polyline points="7 3 7 8 15 8" />
-            </svg>
+            <Save className="w-4 h-4" />
             <span>{saving ? 'กำลังบันทึก...' : 'บันทึกการตั้งค่า'}</span>
           </button>
         </div>
@@ -100,14 +97,14 @@ export default function ConfigTab({ serverId }: ConfigTabProps) {
 
       {loading ? (
         <div className="py-20 text-center text-slate-400">
-          <div className="w-8 h-8 border-3 border-emerald-500/30 border-t-emerald-400 rounded-full animate-spin inline-block" />
-          <p className="text-xs mt-3">กำลังโหลดการตั้งค่า...</p>
+          <RefreshCw className="w-8 h-8 text-emerald-400 animate-spin mx-auto mb-3" />
+          <p className="text-xs">กำลังโหลดการตั้งค่า...</p>
         </div>
       ) : (
         <div className="space-y-6">
           {savedNotice && (
             <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs flex items-center gap-2">
-              <span>✓</span>
+              <Check className="w-4 h-4 text-emerald-400" />
               <span>บันทึก server.properties สำเร็จเรียบร้อย! (กรุณารีสตาร์ทเซิร์ฟเวอร์เพื่อเริ่มใช้การตั้งค่าใหม่)</span>
             </div>
           )}

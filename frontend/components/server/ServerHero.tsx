@@ -1,6 +1,21 @@
 'use client';
 
 import { useState } from 'react';
+import {
+  Play,
+  Square,
+  RotateCw,
+  RefreshCw,
+  Box,
+  Scroll,
+  Cpu,
+  Hammer,
+  Zap,
+  Flame,
+  Gamepad2,
+  Copy,
+  Check,
+} from 'lucide-react';
 
 interface ServerHeroProps {
   server: any;
@@ -35,15 +50,22 @@ export default function ServerHero({
     }
   };
 
-  const getLoaderEmoji = (loader: string) => {
+  const renderLoaderIcon = (loader: string) => {
     switch (loader) {
-      case 'vanilla': return '🟢';
-      case 'paper': return '📄';
-      case 'fabric': return '🧵';
-      case 'forge': return '🔨';
-      case 'neoforge': return '⚡';
-      case 'purpur': return '🟣';
-      default: return '🎮';
+      case 'vanilla':
+        return <Box className="w-7 h-7 text-emerald-400" />;
+      case 'paper':
+        return <Scroll className="w-7 h-7 text-blue-400" />;
+      case 'fabric':
+        return <Cpu className="w-7 h-7 text-purple-400" />;
+      case 'forge':
+        return <Hammer className="w-7 h-7 text-amber-400" />;
+      case 'neoforge':
+        return <Zap className="w-7 h-7 text-orange-400" />;
+      case 'purpur':
+        return <Flame className="w-7 h-7 text-fuchsia-400" />;
+      default:
+        return <Gamepad2 className="w-7 h-7 text-slate-400" />;
     }
   };
 
@@ -97,8 +119,8 @@ export default function ServerHero({
       <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         {/* Server Info */}
         <div className="flex items-start sm:items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center text-3xl flex-shrink-0 shadow-lg">
-            {getLoaderEmoji(server.loader)}
+          <div className="w-14 h-14 rounded-2xl bg-slate-800/90 border border-slate-700 flex items-center justify-center flex-shrink-0 shadow-lg">
+            {renderLoaderIcon(server.loader)}
           </div>
 
           <div className="space-y-1">
@@ -148,8 +170,18 @@ export default function ServerHero({
                 title="คลิกเพื่อคัดลอกที่อยู่เซิร์ฟเวอร์"
               >
                 <span className="font-mono text-emerald-400">localhost:{server.port}</span>
-                <span className="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded border border-slate-700 group-hover:border-emerald-500/50">
-                  {copied ? '✓ คัดลอกแล้ว' : 'คัดลอก'}
+                <span className="inline-flex items-center gap-1 text-[10px] bg-slate-800 px-2 py-0.5 rounded border border-slate-700 group-hover:border-emerald-500/50">
+                  {copied ? (
+                    <>
+                      <Check className="w-3 h-3 text-emerald-400" />
+                      <span>คัดลอกแล้ว</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3 h-3 text-slate-400" />
+                      <span>คัดลอก</span>
+                    </>
+                  )}
                 </span>
               </button>
             </div>
@@ -165,9 +197,7 @@ export default function ServerHero({
               type="button"
               className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white shadow-[0_4px_16px_rgba(16,185,129,0.35)] hover:shadow-[0_6px_22px_rgba(16,185,129,0.45)] transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <polygon points="5 3 19 12 5 21 5 3" />
-              </svg>
+              <Play className="w-4 h-4 fill-current" />
               <span>{actionLoading ? 'กำลังเริ่ม...' : 'เปิดเซิร์ฟเวอร์'}</span>
             </button>
           )}
@@ -180,10 +210,7 @@ export default function ServerHero({
                 type="button"
                 className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-xs bg-slate-800/80 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700/80 hover:border-slate-600 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <svg className="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                  <polyline points="23 4 23 10 17 10" />
-                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
-                </svg>
+                <RotateCw className="w-4 h-4 text-amber-400" />
                 <span>รีสตาร์ท</span>
               </button>
 
@@ -193,9 +220,7 @@ export default function ServerHero({
                 type="button"
                 className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-xs bg-red-500/15 hover:bg-red-500/25 text-red-300 hover:text-white border border-red-500/30 hover:border-red-500/60 shadow-[0_4px_16px_rgba(239,68,68,0.2)] transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                  <rect x="6" y="6" width="12" height="12" />
-                </svg>
+                <Square className="w-4 h-4 fill-current" />
                 <span>หยุดการทำงาน</span>
               </button>
             </>
@@ -207,9 +232,7 @@ export default function ServerHero({
             className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 hover:scale-105 transition-all cursor-pointer shadow-sm"
             title="รีเฟรชข้อมูล"
           >
-            <svg className={`w-4 h-4 text-slate-400 ${actionLoading ? 'animate-spin text-emerald-400' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
-            </svg>
+            <RefreshCw className={`w-4 h-4 text-slate-400 ${actionLoading ? 'animate-spin text-emerald-400' : ''}`} />
           </button>
         </div>
       </div>

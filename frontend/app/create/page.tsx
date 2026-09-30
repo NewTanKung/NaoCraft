@@ -1,16 +1,29 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/api';
+import {
+  Box,
+  Scroll,
+  Cpu,
+  Hammer,
+  Zap,
+  Flame,
+  Sparkles,
+  Check,
+  ArrowLeft,
+  AlertCircle,
+  Server,
+} from 'lucide-react';
 
 interface LoaderOption {
   id: string;
   name: string;
   description: string;
   tag: string;
-  icon: string;
+  icon: ReactNode;
 }
 
 export default function CreateServerPage() {
@@ -28,12 +41,12 @@ export default function CreateServerPage() {
   });
 
   const loaders: LoaderOption[] = [
-    { id: 'vanilla', name: 'Vanilla', description: 'Mojang ดั้งเดิม', tag: 'Official', icon: '🟢' },
-    { id: 'paper', name: 'Paper', description: 'Plugin ประสิทธิภาพสูง', tag: 'Plugins', icon: '📄' },
-    { id: 'fabric', name: 'Fabric', description: 'Mod น้ำหนักเบา', tag: 'Mods', icon: '🧵' },
-    { id: 'forge', name: 'Forge', description: 'Mod ยอดนิยมคลาสสิก', tag: 'Mods', icon: '🔨' },
-    { id: 'neoforge', name: 'NeoForge', description: 'Mod ยุคใหม่ 1.20+', tag: 'Mods', icon: '⚡' },
-    { id: 'purpur', name: 'Purpur', description: 'Paper ปรับแต่งพิเศษ', tag: 'Plugins', icon: '🟣' },
+    { id: 'vanilla', name: 'Vanilla', description: 'Mojang ดั้งเดิม', tag: 'Official', icon: <Box className="w-8 h-8 text-emerald-400" /> },
+    { id: 'paper', name: 'Paper', description: 'Plugin ประสิทธิภาพสูง', tag: 'Plugins', icon: <Scroll className="w-8 h-8 text-blue-400" /> },
+    { id: 'fabric', name: 'Fabric', description: 'Mod น้ำหนักเบา', tag: 'Mods', icon: <Cpu className="w-8 h-8 text-purple-400" /> },
+    { id: 'forge', name: 'Forge', description: 'Mod ยอดนิยมคลาสสิก', tag: 'Mods', icon: <Hammer className="w-8 h-8 text-amber-400" /> },
+    { id: 'neoforge', name: 'NeoForge', description: 'Mod ยุคใหม่ 1.20+', tag: 'Mods', icon: <Zap className="w-8 h-8 text-orange-400" /> },
+    { id: 'purpur', name: 'Purpur', description: 'Paper ปรับแต่งพิเศษ', tag: 'Plugins', icon: <Flame className="w-8 h-8 text-fuchsia-400" /> },
   ];
 
   const [versions, setVersions] = useState<any[]>([]);
@@ -130,10 +143,7 @@ export default function CreateServerPage() {
           href="/"
           className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-emerald-400 transition-colors group"
         >
-          <svg className="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-            <line x1="19" y1="12" x2="5" y2="12" />
-            <polyline points="12 19 5 12 12 5" />
-          </svg>
+          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
           <span>กลับหน้าแดชบอร์ด</span>
         </Link>
       </div>
@@ -143,18 +153,15 @@ export default function CreateServerPage() {
         <div className="relative bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-6 sm:p-8 border-b border-slate-800">
           <div className="relative z-10 flex items-center justify-between">
             <div>
-              <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/25 text-emerald-400 text-xs font-semibold mb-2">
-                <span>🚀 Server Creation Wizard</span>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/25 text-emerald-400 text-xs font-semibold mb-2">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Server Creation Wizard</span>
               </div>
               <h3 className="text-2xl font-extrabold text-white tracking-tight">สร้างเซิร์ฟเวอร์ Minecraft</h3>
               <p className="text-xs text-slate-400 mt-1">กำหนดประเภท Loader เวอร์ชันเกม และทรัพยากรฮาร์ดแวร์ตามต้องการ</p>
             </div>
             <div className="hidden md:flex w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 items-center justify-center text-emerald-400">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-                <line x1="12" y1="22.08" x2="12" y2="12" />
-              </svg>
+              <Server className="w-6 h-6" />
             </div>
           </div>
         </div>
@@ -195,12 +202,12 @@ export default function CreateServerPage() {
                   }`}
                 >
                   {form.loader === loader.id && (
-                    <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px]">
-                      ✓
+                    <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center">
+                      <Check className="w-2.5 h-2.5" />
                     </div>
                   )}
 
-                  <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">
+                  <div className="my-2 group-hover:scale-110 transition-transform">
                     {loader.icon}
                   </div>
                   <div>
@@ -283,7 +290,7 @@ export default function CreateServerPage() {
                           <option value="">อัตโนมัติ (แนะนำเวอร์ชันล่าสุด)</option>
                           {loaderBuilds.map((b) => (
                             <option key={b.id} value={b.id}>
-                              Build: {b.id} {b.stable ? '✓ เสถียร' : '(Beta)'}
+                              Build: {b.id} {b.stable ? '(Stable / เสถียร)' : '(Beta)'}
                             </option>
                           ))}
                         </select>
@@ -404,7 +411,7 @@ export default function CreateServerPage() {
                 </>
               ) : (
                 <>
-                  <span>🚀</span>
+                  <Sparkles className="w-5 h-5" />
                   <span>ยืนยันและสร้างเซิร์ฟเวอร์</span>
                 </>
               )}
@@ -414,11 +421,7 @@ export default function CreateServerPage() {
           {/* Error Alert */}
           {error && (
             <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 flex items-center gap-3 text-red-400 text-sm">
-              <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="8" x2="12" y2="12" />
-                <line x1="12" y1="16" x2="12.01" y2="16" />
-              </svg>
+              <AlertCircle className="w-5 h-5 flex-shrink-0" />
               <span>{error}</span>
             </div>
           )}

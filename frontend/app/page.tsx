@@ -3,6 +3,27 @@
 import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/api';
+import {
+  Server,
+  Activity,
+  PowerOff,
+  Layers,
+  Plus,
+  Activity as PulseIcon,
+  Search,
+  Copy,
+  Check,
+  Play,
+  Square,
+  RotateCw,
+  ChevronRight,
+  Box,
+  Scroll,
+  Cpu,
+  Hammer,
+  Zap,
+  Flame,
+} from 'lucide-react';
 
 interface ServerItem {
   id: string;
@@ -128,6 +149,18 @@ export default function DashboardPage() {
     }
   };
 
+  const getLoaderIcon = (loader: string) => {
+    switch (loader) {
+      case 'vanilla': return <Box className="w-3.5 h-3.5" />;
+      case 'paper': return <Scroll className="w-3.5 h-3.5" />;
+      case 'fabric': return <Cpu className="w-3.5 h-3.5" />;
+      case 'forge': return <Hammer className="w-3.5 h-3.5" />;
+      case 'neoforge': return <Zap className="w-3.5 h-3.5" />;
+      case 'purpur': return <Flame className="w-3.5 h-3.5" />;
+      default: return <Server className="w-3.5 h-3.5" />;
+    }
+  };
+
   const stats = [
     {
       label: 'เซิร์ฟเวอร์ทั้งหมด',
@@ -137,14 +170,7 @@ export default function DashboardPage() {
       dotColor: 'bg-blue-500',
       bgGlow: 'bg-blue-500/20',
       iconContainerClass: 'bg-blue-500/10 border-blue-500/20 text-blue-400',
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-          <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
-          <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
-          <line x1="6" y1="6" x2="6.01" y2="6" />
-          <line x1="6" y1="18" x2="6.01" y2="18" />
-        </svg>
-      ),
+      icon: <Server className="w-5 h-5" />,
     },
     {
       label: 'กำลังทำงาน (Active)',
@@ -154,11 +180,7 @@ export default function DashboardPage() {
       dotColor: 'bg-emerald-500',
       bgGlow: 'bg-emerald-500/20',
       iconContainerClass: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400',
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-          <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-        </svg>
-      ),
+      icon: <Activity className="w-5 h-5" />,
     },
     {
       label: 'หยุดทำงาน (Offline)',
@@ -168,12 +190,7 @@ export default function DashboardPage() {
       dotColor: 'bg-slate-500',
       bgGlow: 'bg-slate-600/20',
       iconContainerClass: 'bg-slate-800 border-slate-700 text-slate-400',
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-          <circle cx="12" cy="12" r="10" />
-          <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
-        </svg>
-      ),
+      icon: <PowerOff className="w-5 h-5" />,
     },
     {
       label: 'Loaders ที่เลือกใช้',
@@ -183,11 +200,7 @@ export default function DashboardPage() {
       dotColor: 'bg-purple-500',
       bgGlow: 'bg-purple-500/20',
       iconContainerClass: 'bg-purple-500/10 border-purple-500/20 text-purple-400',
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-        </svg>
-      ),
+      icon: <Layers className="w-5 h-5" />,
     },
   ];
 
@@ -224,10 +237,7 @@ export default function DashboardPage() {
               href="/create"
               className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white shadow-[0_4px_20px_rgba(16,185,129,0.35)] hover:shadow-[0_8px_30px_rgba(16,185,129,0.5)] hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
-                <line x1="12" y1="5" x2="12" y2="19" />
-                <line x1="5" y1="12" x2="19" y2="12" />
-              </svg>
+              <Plus className="w-4 h-4" />
               <span className="font-bold">สร้างเซิร์ฟเวอร์ใหม่</span>
             </Link>
 
@@ -235,9 +245,7 @@ export default function DashboardPage() {
               href="/monitor"
               className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold text-xs bg-slate-800/80 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700/80 hover:border-slate-600 hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer"
             >
-              <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-              </svg>
+              <Activity className="w-4 h-4 text-slate-400" />
               <span>ดูมอนิเตอร์</span>
             </Link>
           </div>
@@ -292,6 +300,7 @@ export default function DashboardPage() {
           {/* Filter bar */}
           <div className="flex items-center gap-3">
             <div className="relative">
+              <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5 pointer-events-none" />
               <input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -299,10 +308,6 @@ export default function DashboardPage() {
                 placeholder="ค้นหาชื่อเซิร์ฟเวอร์..."
                 className="w-48 sm:w-60 py-1.5 px-3 pl-9 rounded-xl bg-slate-900/90 text-slate-100 border border-slate-700/80 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/50 outline-none text-xs transition-all placeholder:text-slate-500"
               />
-              <svg className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
             </div>
 
             <select
@@ -330,12 +335,7 @@ export default function DashboardPage() {
         ) : servers.length === 0 ? (
           <div className="rounded-2xl bg-gradient-to-br from-slate-900/90 to-[#0b101e]/90 border border-dashed border-2 border-slate-800 shadow-xl backdrop-blur-xl p-16 text-center">
             <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.2)]">
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-                <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
-                <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
-                <line x1="6" y1="6" x2="6.01" y2="6" />
-                <line x1="6" y1="18" x2="6.01" y2="18" />
-              </svg>
+              <Server className="w-8 h-8" />
             </div>
             <h4 className="text-lg font-bold text-white">ยังไม่มีเซิร์ฟเวอร์ที่ถูกสร้าง</h4>
             <p className="text-sm text-slate-400 mt-1 max-w-sm mx-auto">
@@ -345,7 +345,8 @@ export default function DashboardPage() {
               href="/create"
               className="inline-flex items-center justify-center gap-2 mt-6 px-6 py-2.5 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white shadow-[0_4px_20px_rgba(16,185,129,0.35)] hover:shadow-[0_8px_30px_rgba(16,185,129,0.5)] transition-all cursor-pointer"
             >
-              <span>+ สร้างเซิร์ฟเวอร์แรกของคุณ</span>
+              <Plus className="w-4 h-4" />
+              <span>สร้างเซิร์ฟเวอร์แรกของคุณ</span>
             </Link>
           </div>
         ) : (
@@ -358,8 +359,8 @@ export default function DashboardPage() {
                 <div>
                   <div className="flex items-start justify-between gap-3 mb-3">
                     <span className={loaderBadgeClass(server.loader)}>
-                      <span className="w-1.5 h-1.5 rounded-full bg-current" />
-                      {server.loader}
+                      {getLoaderIcon(server.loader)}
+                      <span>{server.loader}</span>
                     </span>
 
                     <div className="flex items-center gap-1.5">
@@ -405,10 +406,7 @@ export default function DashboardPage() {
                     </div>
                     <div className="col-span-2 pt-2 border-t border-slate-700/60 flex items-center justify-between">
                       <div className="flex items-center gap-1.5 text-slate-300">
-                        <svg className="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                          <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
-                          <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
-                        </svg>
+                        <Server className="w-3.5 h-3.5 text-slate-400" />
                         <span className="font-mono text-[11px]">localhost:{server.port}</span>
                       </div>
                       <button
@@ -417,10 +415,20 @@ export default function DashboardPage() {
                           copyAddress(server.port);
                         }}
                         type="button"
-                        className="text-[10px] text-emerald-400 hover:text-white transition-colors cursor-pointer"
+                        className="text-[10px] text-emerald-400 hover:text-white transition-colors cursor-pointer flex items-center gap-1"
                         title="คัดลอกที่อยู่เซิร์ฟเวอร์"
                       >
-                        {copiedPort === server.port ? '✓ คัดลอกแล้ว' : 'คัดลอก IP'}
+                        {copiedPort === server.port ? (
+                          <>
+                            <Check className="w-3 h-3 text-emerald-400" />
+                            <span>คัดลอกแล้ว</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3 h-3 text-emerald-400" />
+                            <span>คัดลอก IP</span>
+                          </>
+                        )}
                       </button>
                     </div>
                   </div>
@@ -436,9 +444,7 @@ export default function DashboardPage() {
                         type="button"
                         className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-xs bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white shadow-sm hover:shadow-md transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                          <polygon points="5 3 19 12 5 21 5 3" />
-                        </svg>
+                        <Play className="w-3.5 h-3.5 fill-current" />
                         <span>เปิดเซิร์ฟ</span>
                       </button>
                     )}
@@ -451,9 +457,7 @@ export default function DashboardPage() {
                           type="button"
                           className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg font-semibold text-xs bg-red-500/15 hover:bg-red-500/25 text-red-300 hover:text-white border border-red-500/30 hover:border-red-500/60 shadow-sm transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                            <rect x="6" y="6" width="12" height="12" />
-                          </svg>
+                          <Square className="w-3.5 h-3.5 fill-current" />
                           <span>หยุด</span>
                         </button>
 
@@ -464,10 +468,7 @@ export default function DashboardPage() {
                           className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                           title="รีสตาร์ท"
                         >
-                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                            <polyline points="23 4 23 10 17 10" />
-                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
-                          </svg>
+                          <RotateCw className={`w-3.5 h-3.5 ${actionId === server.id ? 'animate-spin' : ''}`} />
                         </button>
                       </>
                     )}
@@ -475,12 +476,10 @@ export default function DashboardPage() {
 
                   <Link
                     href={`/servers/${server.id}`}
-                    className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-lg font-semibold text-xs bg-slate-800/80 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700/80 hover:border-slate-600 transition-all cursor-pointer"
+                    className="inline-flex items-center justify-center gap-1 px-3.5 py-1.5 rounded-lg font-semibold text-xs bg-slate-800/80 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700/80 hover:border-slate-600 transition-all cursor-pointer group/link"
                   >
                     <span>คอนโซล</span>
-                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                      <polyline points="9 18 15 12 9 6" />
-                    </svg>
+                    <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover/link:translate-x-0.5" />
                   </Link>
                 </div>
               </div>

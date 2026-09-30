@@ -3,6 +3,7 @@
 import { use, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/api';
+import { Terminal, Folder, Sliders, AlertTriangle, ArrowLeft } from 'lucide-react';
 import ServerHero from '@/components/server/ServerHero';
 import ConsoleTab from '@/components/server/ConsoleTab';
 import FileManagerTab from '@/components/server/FileManagerTab';
@@ -57,42 +58,22 @@ export default function ServerDetailsPage({ params }: ServerDetailsPageProps) {
     {
       id: 'console' as const,
       label: 'คอนโซลสด (Live Console)',
-      icon: (
-        <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-          <polyline points="4 17 10 11 4 5" />
-          <line x1="12" y1="19" x2="20" y2="19" />
-        </svg>
-      ),
+      icon: <Terminal className="w-5 h-5 flex-shrink-0" />,
     },
     {
       id: 'files' as const,
       label: 'จัดการไฟล์ (File Manager)',
-      icon: (
-        <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-        </svg>
-      ),
+      icon: <Folder className="w-5 h-5 flex-shrink-0" />,
     },
     {
       id: 'config' as const,
       label: 'การตั้งค่า (server.properties)',
-      icon: (
-        <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-          <circle cx="12" cy="12" r="3" />
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
-        </svg>
-      ),
+      icon: <Sliders className="w-5 h-5 flex-shrink-0" />,
     },
     {
       id: 'danger' as const,
       label: 'โซนอันตราย (Danger Zone)',
-      icon: (
-        <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-          <line x1="12" y1="9" x2="12" y2="13" />
-          <line x1="12" y1="17" x2="12.01" y2="17" />
-        </svg>
-      ),
+      icon: <AlertTriangle className="w-5 h-5 flex-shrink-0" />,
     },
   ];
 
@@ -108,8 +89,8 @@ export default function ServerDetailsPage({ params }: ServerDetailsPageProps) {
   if (!server) {
     return (
       <div className="rounded-2xl bg-gradient-to-br from-slate-900/90 to-[#0b101e]/90 border border-slate-800 shadow-xl backdrop-blur-xl p-16 text-center animate-[fade-in_0.3s_ease-out]">
-        <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 text-3xl">
-          ⚠️
+        <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400">
+          <AlertTriangle className="w-8 h-8 text-rose-400" />
         </div>
         <h3 className="text-xl font-bold text-white">ไม่พบเซิร์ฟเวอร์ที่ต้องการ</h3>
         <p className="text-xs text-slate-400 mt-1">เซิร์ฟเวอร์นี้อาจถูกลบไปแล้ว หรือไม่มีอยู่ในระบบ</p>
@@ -131,10 +112,7 @@ export default function ServerDetailsPage({ params }: ServerDetailsPageProps) {
           href="/servers"
           className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-emerald-400 transition-colors group"
         >
-          <svg className="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-            <line x1="19" y1="12" x2="5" y2="12" />
-            <polyline points="12 19 5 12 12 5" />
-          </svg>
+          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
           <span>กลับหน้ารายการเซิร์ฟเวอร์</span>
         </Link>
       </div>

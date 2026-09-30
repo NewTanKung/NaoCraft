@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
+import { AlertTriangle, Trash2, X, Eraser } from 'lucide-react';
 
 interface DangerZoneTabProps {
   serverId: string;
@@ -45,7 +46,7 @@ export default function DangerZoneTab({ serverId, serverName }: DangerZoneTabPro
     <div className="rounded-2xl bg-[#090d18] border border-red-500/30 p-6 space-y-6 shadow-2xl backdrop-blur-md">
       <div className="border-b border-red-500/20 pb-4">
         <h4 className="text-base font-bold text-red-400 flex items-center gap-2">
-          <span>⚠️</span>
+          <AlertTriangle className="w-5 h-5 text-red-400 shrink-0" />
           <span>โซนอันตราย (Danger Zone)</span>
         </h4>
         <p className="text-xs text-slate-400 mt-0.5">การกระทำในส่วนนี้มีผลกระทบต่อข้อมูลเซิร์ฟเวอร์ กรุณาตรวจสอบให้รอบคอบก่อนทำรายการ</p>
@@ -60,8 +61,8 @@ export default function DangerZoneTab({ serverId, serverName }: DangerZoneTabPro
           }`}
         >
           <span>{message.text}</span>
-          <button onClick={() => setMessage(null)} type="button" className="cursor-pointer">
-            ✕
+          <button onClick={() => setMessage(null)} type="button" className="cursor-pointer hover:text-white transition-colors">
+            <X className="w-3.5 h-3.5" />
           </button>
         </div>
       )}
@@ -93,9 +94,10 @@ export default function DangerZoneTab({ serverId, serverName }: DangerZoneTabPro
           <button
             onClick={() => setShowDeleteModal(true)}
             type="button"
-            className="px-4 py-2.5 rounded-xl text-xs font-bold bg-red-600/90 hover:bg-red-600 text-white shadow-md transition-colors cursor-pointer whitespace-nowrap"
+            className="px-4 py-2.5 rounded-xl text-xs font-bold bg-red-600/90 hover:bg-red-600 text-white shadow-md transition-colors cursor-pointer whitespace-nowrap flex items-center gap-1.5"
           >
-            🗑️ ลบเซิร์ฟเวอร์นี้
+            <Trash2 className="w-4 h-4" />
+            <span>ลบเซิร์ฟเวอร์นี้</span>
           </button>
         </div>
       </div>
@@ -108,9 +110,11 @@ export default function DangerZoneTab({ serverId, serverName }: DangerZoneTabPro
             className="bg-[#0b101e] border border-red-500/40 rounded-2xl w-full max-w-md p-6 space-y-5 shadow-2xl animate-[scale-in_0.15s_ease-out]"
           >
             <div className="flex items-center gap-3 text-red-400">
-              <span className="text-2xl">⚠️</span>
+              <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0">
+                <AlertTriangle className="w-5 h-5 text-red-400" />
+              </div>
               <div>
-                <h4 className="text-base font-bold">ยืนยันการลบเซิร์ฟเวอร์</h4>
+                <h4 className="text-base font-bold text-white">ยืนยันการลบเซิร์ฟเวอร์</h4>
                 <p className="text-xs text-slate-400">การกระทำนี้จะลบข้อมูลทั้งหมดอย่างถาวร</p>
               </div>
             </div>

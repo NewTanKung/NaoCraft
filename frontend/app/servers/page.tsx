@@ -3,6 +3,22 @@
 import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/api';
+import {
+  Server,
+  ServerOff,
+  Plus,
+  Play,
+  Square,
+  RotateCw,
+  ArrowRight,
+  Search,
+  Box,
+  Scroll,
+  Cpu,
+  Hammer,
+  Zap,
+  Flame,
+} from 'lucide-react';
 
 interface ServerItem {
   id: string;
@@ -108,32 +124,47 @@ export default function ServersPage() {
     }
   };
 
+  const getLoaderIcon = (loader: string) => {
+    switch (loader) {
+      case 'vanilla': return <Box className="w-3.5 h-3.5" />;
+      case 'paper': return <Scroll className="w-3.5 h-3.5" />;
+      case 'fabric': return <Cpu className="w-3.5 h-3.5" />;
+      case 'forge': return <Hammer className="w-3.5 h-3.5" />;
+      case 'neoforge': return <Zap className="w-3.5 h-3.5" />;
+      case 'purpur': return <Flame className="w-3.5 h-3.5" />;
+      default: return <Server className="w-3.5 h-3.5" />;
+    }
+  };
+
   return (
     <div className="space-y-6 animate-[fade-in_0.3s_ease-out]">
       {/* Top toolbar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h3 className="text-xl font-bold text-white tracking-tight">เซิร์ฟเวอร์ทั้งหมดในระบบ</h3>
+          <h3 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
+            <Server className="w-6 h-6 text-emerald-400" />
+            <span>เซิร์ฟเวอร์ทั้งหมดในระบบ</span>
+          </h3>
           <p className="text-xs text-slate-400 mt-0.5">ควบคุมสถานะ และเข้าไปจัดการ Console หรือไฟล์ของเซิร์ฟเวอร์</p>
         </div>
 
         <div className="flex items-center gap-3">
-          <input
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            type="text"
-            placeholder="ค้นหาชื่อเซิร์ฟเวอร์..."
-            className="w-48 sm:w-60 py-2 px-3.5 rounded-xl bg-slate-900/90 text-slate-100 border border-slate-700/80 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/50 outline-none text-xs transition-all placeholder:text-slate-500"
-          />
+          <div className="relative">
+            <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <input
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              type="text"
+              placeholder="ค้นหาชื่อเซิร์ฟเวอร์..."
+              className="w-48 sm:w-60 py-2 pl-9 pr-3.5 rounded-xl bg-slate-900/90 text-slate-100 border border-slate-700/80 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/50 outline-none text-xs transition-all placeholder:text-slate-500"
+            />
+          </div>
 
           <Link
             href="/create"
             className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl font-bold text-xs bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white shadow-[0_4px_16px_rgba(16,185,129,0.3)] hover:shadow-[0_6px_22px_rgba(16,185,129,0.45)] hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer whitespace-nowrap"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
-              <line x1="12" y1="5" x2="12" y2="19" />
-              <line x1="5" y1="12" x2="19" y2="12" />
-            </svg>
+            <Plus className="w-4 h-4" />
             <span>สร้างเซิร์ฟเวอร์</span>
           </Link>
         </div>
@@ -147,8 +178,8 @@ export default function ServersPage() {
         </div>
       ) : filteredServers.length === 0 ? (
         <div className="rounded-2xl bg-gradient-to-br from-slate-900/90 to-[#0b101e]/90 border border-dashed border-2 border-slate-800 shadow-xl backdrop-blur-xl p-16 text-center">
-          <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-slate-800 flex items-center justify-center text-slate-400 text-2xl">
-            🖥️
+          <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-slate-800/80 border border-slate-700 flex items-center justify-center text-slate-400">
+            <ServerOff className="w-7 h-7" />
           </div>
           <h4 className="text-base font-bold text-white">ไม่พบเซิร์ฟเวอร์</h4>
           <p className="text-xs text-slate-400 mt-1">ยังไม่มีเซิร์ฟเวอร์ที่ตรงกับคำค้นหาของคุณ</p>
@@ -156,7 +187,8 @@ export default function ServersPage() {
             href="/create"
             className="inline-flex items-center justify-center gap-1.5 mt-4 px-5 py-2 rounded-xl font-bold text-xs bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white shadow-sm hover:shadow-md transition-all cursor-pointer"
           >
-            + สร้างเซิร์ฟเวอร์ใหม่
+            <Plus className="w-4 h-4" />
+            <span>สร้างเซิร์ฟเวอร์ใหม่</span>
           </Link>
         </div>
       ) : (
@@ -169,15 +201,17 @@ export default function ServersPage() {
               <div>
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <span className={loaderBadgeClass(server.loader)}>
-                    <span className="w-1.5 h-1.5 rounded-full bg-current" />
-                    {{
-                      vanilla: 'Vanilla',
-                      paper: 'Paper',
-                      fabric: 'Fabric',
-                      forge: 'Forge',
-                      neoforge: 'NeoForge',
-                      purpur: 'Purpur',
-                    }[server.loader] || server.loader}
+                    {getLoaderIcon(server.loader)}
+                    <span>
+                      {{
+                        vanilla: 'Vanilla',
+                        paper: 'Paper',
+                        fabric: 'Fabric',
+                        forge: 'Forge',
+                        neoforge: 'NeoForge',
+                        purpur: 'Purpur',
+                      }[server.loader] || server.loader}
+                    </span>
                   </span>
 
                   <div className="flex items-center gap-1.5">
@@ -235,7 +269,8 @@ export default function ServersPage() {
                       type="button"
                       className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-xs bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white shadow-sm hover:shadow-md transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      ▶️ เปิดเซิร์ฟ
+                      <Play className="w-3.5 h-3.5 fill-current" />
+                      <span>เปิดเซิร์ฟ</span>
                     </button>
                   )}
                   {server.status === 'running' && (
@@ -246,7 +281,8 @@ export default function ServersPage() {
                         type="button"
                         className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg font-semibold text-xs bg-red-500/15 hover:bg-red-500/25 text-red-300 hover:text-white border border-red-500/30 hover:border-red-500/60 shadow-sm transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        ⏹️ หยุด
+                        <Square className="w-3.5 h-3.5 fill-current" />
+                        <span>หยุด</span>
                       </button>
                       <button
                         onClick={() => handleRestart(server.id)}
@@ -255,7 +291,7 @@ export default function ServersPage() {
                         className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                         title="รีสตาร์ท"
                       >
-                        🔄
+                        <RotateCw className={`w-3.5 h-3.5 ${actionId === server.id ? 'animate-spin' : ''}`} />
                       </button>
                     </>
                   )}
@@ -263,10 +299,10 @@ export default function ServersPage() {
 
                 <Link
                   href={`/servers/${server.id}`}
-                  className="inline-flex items-center justify-center gap-1 px-3.5 py-1.5 rounded-lg font-semibold text-xs bg-slate-800/80 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700/80 hover:border-slate-600 transition-all cursor-pointer"
+                  className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-lg font-semibold text-xs bg-slate-800/80 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700/80 hover:border-slate-600 transition-all cursor-pointer group/link"
                 >
                   <span>จัดการ</span>
-                  <span>→</span>
+                  <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/link:translate-x-0.5" />
                 </Link>
               </div>
             </div>
