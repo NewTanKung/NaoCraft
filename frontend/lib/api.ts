@@ -107,6 +107,38 @@ export const api = {
   getSystemStats: () => apiFetch('/api/monitor/system'),
   getServerStats: (id: string) => apiFetch(`/api/monitor/server/${id}`),
 
+  // ─── Network & External Connections ──────────
+  getNetworkStatus: () => apiFetch('/api/network/status'),
+  getNetworkConfig: () => apiFetch('/api/network/config'),
+  saveNetworkConfig: (config: any) =>
+    apiFetch('/api/network/config', {
+      method: 'PUT',
+      body: JSON.stringify(config),
+    }),
+  getTunnels: () => apiFetch('/api/network/tunnels'),
+  startTunnel: (params: {
+    provider: 'playit' | 'ngrok' | 'cloudflare';
+    targetType: 'minecraft' | 'panel';
+    targetPort: number;
+    serverId?: string;
+    serverName?: string;
+  }) =>
+    apiFetch('/api/network/tunnels/start', {
+      method: 'POST',
+      body: JSON.stringify(params),
+    }),
+  stopTunnel: (tunnelId: string) =>
+    apiFetch('/api/network/tunnels/stop', {
+      method: 'POST',
+      body: JSON.stringify({ tunnelId }),
+    }),
+  getServerConnection: (serverId: string) =>
+    apiFetch(`/api/network/servers/${serverId}`),
+  getNetworkTemplates: (domain: string, ssl: boolean, mcPort: number = 25565) =>
+    apiFetch(
+      `/api/network/templates?domain=${encodeURIComponent(domain)}&ssl=${ssl}&mcPort=${mcPort}`
+    ),
+
   // ─── WebSocket ───────────────────────────────
   connectConsole: (id: string): WebSocket => {
     const baseURL = getBaseUrl();

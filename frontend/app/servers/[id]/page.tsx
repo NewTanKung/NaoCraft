@@ -3,12 +3,13 @@
 import { use, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/api';
-import { Terminal, Folder, Sliders, AlertTriangle, ArrowLeft } from 'lucide-react';
+import { Terminal, Folder, Sliders, AlertTriangle, ArrowLeft, Globe } from 'lucide-react';
 import ServerHero from '@/components/server/ServerHero';
 import ConsoleTab from '@/components/server/ConsoleTab';
 import FileManagerTab from '@/components/server/FileManagerTab';
 import ConfigTab from '@/components/server/ConfigTab';
 import DangerZoneTab from '@/components/server/DangerZoneTab';
+import NetworkTab from '@/components/server/NetworkTab';
 
 interface ServerDetailsPageProps {
   params: Promise<{ id: string }>;
@@ -20,7 +21,7 @@ export default function ServerDetailsPage({ params }: ServerDetailsPageProps) {
 
   const [server, setServer] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'console' | 'files' | 'config' | 'danger'>('console');
+  const [activeTab, setActiveTab] = useState<'console' | 'files' | 'config' | 'network' | 'danger'>('console');
 
   const fetchServer = async () => {
     try {
@@ -69,6 +70,11 @@ export default function ServerDetailsPage({ params }: ServerDetailsPageProps) {
       id: 'config' as const,
       label: 'การตั้งค่า (server.properties)',
       icon: <Sliders className="w-5 h-5 flex-shrink-0" />,
+    },
+    {
+      id: 'network' as const,
+      label: 'การเชื่อมต่อภายนอก (Network & Tunnels)',
+      icon: <Globe className="w-5 h-5 flex-shrink-0" />,
     },
     {
       id: 'danger' as const,
@@ -153,6 +159,7 @@ export default function ServerDetailsPage({ params }: ServerDetailsPageProps) {
         {activeTab === 'console' && <ConsoleTab serverId={serverId} />}
         {activeTab === 'files' && <FileManagerTab serverId={serverId} server={server} />}
         {activeTab === 'config' && <ConfigTab serverId={serverId} />}
+        {activeTab === 'network' && <NetworkTab serverId={serverId} server={server} />}
         {activeTab === 'danger' && <DangerZoneTab serverId={serverId} serverName={server.name} />}
       </div>
     </div>

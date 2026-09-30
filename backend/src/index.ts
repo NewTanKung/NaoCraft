@@ -8,6 +8,7 @@ import { loadersRoute } from './routes/loaders';
 import { consoleRoute } from './routes/console';
 import { filesRoute } from './routes/files';
 import { monitorRoute } from './routes/monitor';
+import { networkRoute } from './routes/network';
 
 const PORT = process.env.PORT || 4000;
 
@@ -36,6 +37,7 @@ const app = new Elysia()
   .use(consoleRoute)
   .use(filesRoute)
   .use(monitorRoute)
+  .use(networkRoute)
 
   // Start server
   .listen(PORT);

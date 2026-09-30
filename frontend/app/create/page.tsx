@@ -41,12 +41,12 @@ export default function CreateServerPage() {
   });
 
   const loaders: LoaderOption[] = [
-    { id: 'vanilla', name: 'Vanilla', description: 'Mojang ดั้งเดิม', tag: 'Official', icon: <Box className="w-8 h-8 text-emerald-400" /> },
-    { id: 'paper', name: 'Paper', description: 'Plugin ประสิทธิภาพสูง', tag: 'Plugins', icon: <Scroll className="w-8 h-8 text-blue-400" /> },
-    { id: 'fabric', name: 'Fabric', description: 'Mod น้ำหนักเบา', tag: 'Mods', icon: <Cpu className="w-8 h-8 text-purple-400" /> },
-    { id: 'forge', name: 'Forge', description: 'Mod ยอดนิยมคลาสสิก', tag: 'Mods', icon: <Hammer className="w-8 h-8 text-amber-400" /> },
-    { id: 'neoforge', name: 'NeoForge', description: 'Mod ยุคใหม่ 1.20+', tag: 'Mods', icon: <Zap className="w-8 h-8 text-orange-400" /> },
-    { id: 'purpur', name: 'Purpur', description: 'Paper ปรับแต่งพิเศษ', tag: 'Plugins', icon: <Flame className="w-8 h-8 text-fuchsia-400" /> },
+    { id: 'vanilla', name: 'Vanilla', description: '', tag: 'Official', icon: <Box className="w-8 h-8 text-emerald-400" /> },
+    { id: 'paper', name: 'Paper', description: '', tag: 'Plugins', icon: <Scroll className="w-8 h-8 text-blue-400" /> },
+    { id: 'fabric', name: 'Fabric', description: '', tag: 'Mods', icon: <Cpu className="w-8 h-8 text-purple-400" /> },
+    { id: 'forge', name: 'Forge', description: '', tag: 'Mods', icon: <Hammer className="w-8 h-8 text-amber-400" /> },
+    { id: 'neoforge', name: 'NeoForge', description: '', tag: 'Mods', icon: <Zap className="w-8 h-8 text-orange-400" /> },
+    { id: 'purpur', name: 'Purpur', description: '', tag: 'Plugins', icon: <Flame className="w-8 h-8 text-fuchsia-400" /> },
   ];
 
   const [versions, setVersions] = useState<any[]>([]);
@@ -96,7 +96,7 @@ export default function CreateServerPage() {
       .then((data) => {
         if (active) setLoaderBuilds(data.builds || []);
       })
-      .catch(() => {})
+      .catch(() => { })
       .finally(() => {
         if (active) setLoadingBuilds(false);
       });
@@ -195,11 +195,10 @@ export default function CreateServerPage() {
                   key={loader.id}
                   type="button"
                   onClick={() => selectLoader(loader.id)}
-                  className={`p-4 rounded-xl border text-center transition-all duration-200 cursor-pointer group relative flex flex-col items-center justify-between ${
-                    form.loader === loader.id
-                      ? 'border-emerald-500 bg-emerald-500/15 shadow-[0_0_20px_rgba(16,185,129,0.3)] scale-[1.02]'
-                      : 'border-slate-800 bg-slate-800/70 hover:border-slate-500 hover:bg-slate-800'
-                  }`}
+                  className={`p-4 rounded-xl border text-center transition-all duration-200 cursor-pointer group relative flex flex-col items-center justify-between ${form.loader === loader.id
+                    ? 'border-emerald-500 bg-emerald-500/15 shadow-[0_0_20px_rgba(16,185,129,0.3)] scale-[1.02]'
+                    : 'border-slate-800 bg-slate-800/70 hover:border-slate-500 hover:bg-slate-800'
+                    }`}
                 >
                   {form.loader === loader.id && (
                     <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center">
@@ -215,9 +214,8 @@ export default function CreateServerPage() {
                     <div className="text-[11px] text-slate-400 mt-0.5 leading-snug">{loader.description}</div>
                   </div>
                   <span
-                    className={`mt-2 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
-                      form.loader === loader.id ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-800 text-slate-400'
-                    }`}
+                    className={`mt-2 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${form.loader === loader.id ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-800 text-slate-400'
+                      }`}
                   >
                     {loader.tag}
                   </span>
@@ -273,8 +271,8 @@ export default function CreateServerPage() {
                         {form.loader === 'fabric'
                           ? 'Fabric Loader Build'
                           : form.loader === 'neoforge'
-                          ? 'NeoForge Build'
-                          : 'Forge Build'}
+                            ? 'NeoForge Build'
+                            : 'Forge Build'}
                       </div>
                       {loadingBuilds ? (
                         <div className="flex items-center gap-2 text-xs text-slate-400 py-2.5">
@@ -316,11 +314,10 @@ export default function CreateServerPage() {
                   key={ram}
                   type="button"
                   onClick={() => setForm({ ...form, maxMemory: ram })}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all cursor-pointer ${
-                    form.maxMemory === ram
-                      ? 'bg-emerald-500 text-white shadow-[0_0_12px_rgba(16,185,129,0.4)]'
-                      : 'bg-slate-800/80 border border-slate-700 text-slate-400 hover:text-white hover:border-slate-500'
-                  }`}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all cursor-pointer ${form.maxMemory === ram
+                    ? 'bg-emerald-500 text-white shadow-[0_0_12px_rgba(16,185,129,0.4)]'
+                    : 'bg-slate-800/80 border border-slate-700 text-slate-400 hover:text-white hover:border-slate-500'
+                    }`}
                 >
                   {ram}
                 </button>

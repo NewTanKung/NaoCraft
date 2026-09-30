@@ -2,6 +2,15 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import {
+  LayoutDashboard,
+  Server,
+  PlusCircle,
+  Activity,
+  Globe,
+  Plus,
+  Box,
+} from 'lucide-react';
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -10,44 +19,27 @@ export default function Sidebar() {
     {
       to: '/',
       label: 'แดชบอร์ด',
-      icon: (
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-          <polyline points="9 22 9 12 15 12 15 22" />
-        </svg>
-      ),
+      icon: <LayoutDashboard className="w-4 h-4" />,
     },
     {
       to: '/servers',
       label: 'เซิร์ฟเวอร์ทั้งหมด',
-      icon: (
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-          <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
-          <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
-          <line x1="6" y1="6" x2="6.01" y2="6" />
-          <line x1="6" y1="18" x2="6.01" y2="18" />
-        </svg>
-      ),
+      icon: <Server className="w-4 h-4" />,
     },
     {
       to: '/create',
       label: 'สร้างเซิร์ฟเวอร์',
-      icon: (
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-          <circle cx="12" cy="12" r="10" />
-          <line x1="12" y1="8" x2="12" y2="16" />
-          <line x1="8" y1="12" x2="16" y2="12" />
-        </svg>
-      ),
+      icon: <PlusCircle className="w-4 h-4" />,
     },
     {
       to: '/monitor',
       label: 'มอนิเตอร์ทรัพยากร',
-      icon: (
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-          <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-        </svg>
-      ),
+      icon: <Activity className="w-4 h-4" />,
+    },
+    {
+      to: '/network',
+      label: 'เชื่อมต่อภายนอก',
+      icon: <Globe className="w-4 h-4" />,
     },
   ];
 
@@ -63,11 +55,7 @@ export default function Sidebar() {
         <Link href="/" className="flex items-center gap-3.5 group">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 via-emerald-600 to-cyan-500 p-0.5 shadow-[0_0_18px_rgba(16,185,129,0.35)] group-hover:shadow-[0_0_25px_rgba(16,185,129,0.55)] transition-all duration-300">
             <div className="w-full h-full bg-[#080d1a] rounded-[10px] flex items-center justify-center">
-              <svg className="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-                <line x1="12" y1="22.08" x2="12" y2="12" />
-              </svg>
+              <Box className="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform duration-300" />
             </div>
           </div>
           <div>
@@ -86,10 +74,7 @@ export default function Sidebar() {
           href="/create"
           className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white text-xs font-semibold shadow-[0_4px_16px_rgba(16,185,129,0.3)] hover:shadow-[0_6px_22px_rgba(16,185,129,0.5)] transition-all duration-200 cursor-pointer active:scale-95"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
-            <line x1="12" y1="5" x2="12" y2="19" />
-            <line x1="5" y1="12" x2="19" y2="12" />
-          </svg>
+          <Plus className="w-4 h-4" />
           <span>สร้างเซิร์ฟเวอร์</span>
         </Link>
       </div>

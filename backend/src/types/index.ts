@@ -69,3 +69,63 @@ export interface FileInfo {
   size: number;
   modifiedAt: string;
 }
+
+// ─── Network & External Connection Types ───────────────────
+
+export interface NetworkInterfaceInfo {
+  name: string;
+  address: string;
+  family: string;
+  internal: boolean;
+}
+
+export interface NetworkStatus {
+  publicIpv4: string | null;
+  publicIpv6: string | null;
+  lanIps: NetworkInterfaceInfo[];
+  hostname: string;
+  uptime: number;
+  lastChecked: string;
+}
+
+export interface TunnelConfig {
+  playitSecret?: string;
+  ngrokAuthToken?: string;
+  cloudflareTunnelToken?: string;
+  panelDomain?: string;
+  panelSslEnabled?: boolean;
+}
+
+export interface TunnelInstance {
+  id: string;
+  provider: 'playit' | 'ngrok' | 'cloudflare';
+  targetType: 'minecraft' | 'panel';
+  serverId?: string;
+  serverName?: string;
+  targetPort: number;
+  status: 'stopped' | 'starting' | 'active' | 'error';
+  publicAddress?: string;
+  logs: string[];
+  startedAt?: string;
+  error?: string;
+  pid?: number;
+}
+
+export interface ServerConnectionInfo {
+  serverId: string;
+  serverName: string;
+  port: number;
+  status: ServerStatus;
+  lanAddress: string;
+  publicAddress: string | null;
+  activeTunnel?: TunnelInstance | null;
+  srvRecord: {
+    service: string;
+    proto: string;
+    name: string;
+    priority: number;
+    weight: number;
+    port: number;
+    target: string;
+  };
+}
