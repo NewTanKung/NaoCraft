@@ -3,6 +3,6 @@ dist/
 .nuxt/
 .output/
 .data/
-servers/
+/servers/
 *.log
 .DS_Store

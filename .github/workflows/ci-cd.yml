@@ -1,0 +1,94 @@
+name: NaoCraft CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  # ─────────────────────────────────────────────────────────────
+  # JOB 1: Continuous Integration (Test, Typecheck, Build)
+  # ─────────────────────────────────────────────────────────────
+  ci:
+    name: 🧪 CI - Lint, Test & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🍞 Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      # Cache Bun dependencies for ultra-fast builds
+      - name: 📦 Cache Bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock', '**/bun.lockb') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      # ── Backend CI ──
+      - name: 🔧 Install Backend Dependencies
+        working-directory: ./backend
+        run: bun install --frozen-lockfile || bun install
+
+      - name: 🔍 Typecheck Backend
+        working-directory: ./backend
+        run: bunx tsc --noEmit
+
+      # ── Frontend CI ──
+      - name: 🔧 Install Frontend Dependencies
+        working-directory: ./frontend
+        run: bun install --frozen-lockfile || bun install
+
+      - name: 🏗️ Build Frontend (Next.js Production)
+        working-directory: ./frontend
+        env:
+          NODE_ENV: production
+        run: bun run build
+
+  # ─────────────────────────────────────────────────────────────
+  # JOB 2: Continuous Deployment (SSH Deploy to Ubuntu Server)
+  # ─────────────────────────────────────────────────────────────
+  cd:
+    name: 🚀 CD - Deploy to Ubuntu Server
+    needs: ci
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🚀 Deploy via SSH to Ubuntu Server
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          script_stop: true
+          script: |
+            echo "🚀 [1/5] Navigating to NaoCraft directory..."
+            cd /opt/naocraft || cd ~/naocraft
+
+            echo "📥 [2/5] Pulling latest changes from Git..."
+            git pull origin main || git pull origin master
+
+            echo "📦 [3/5] Installing dependencies..."
+            cd backend && bun install
+            cd ../frontend && bun install
+
+            echo "🏗️ [4/5] Building Next.js frontend..."
+            bun run build
+
+            echo "🔄 [5/5] Restarting systemd services..."
+            sudo systemctl restart naocraft-backend
+            sudo systemctl restart naocraft-frontend
+
+            echo "✅ Deployment completed successfully!"

@@ -1,0 +1,20 @@
+[Unit]
+Description=NaoCraft Backend Service (Elysia + Bun)
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/naocraft/backend
+ExecStart=/usr/local/bin/bun run src/index.ts
+Restart=always
+RestartSec=5
+Environment=NODE_ENV=production
+Environment=PORT=4000
+Environment=PATH=/usr/local/bin:/usr/bin:/bin:/usr/lib/jvm/java-17-openjdk-amd64/bin
+
+# Limits for Minecraft process spawning
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
